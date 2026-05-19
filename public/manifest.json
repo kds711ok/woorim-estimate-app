@@ -1,0 +1,15 @@
+{
+  "name": "우림기술 견적현황관리",
+  "short_name": "우림기술",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

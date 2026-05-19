@@ -25,7 +25,7 @@ import {
 export default function App() {
   const estimateCollection = collection(db, "estimates");
 
-  const adminEmails = ["admin@woorim.com"];
+  const adminEmails = ["admin@woorim.com", "ds@woorim-tech.com", "nr@woorim-tech.com"];
 
   const [estimates, setEstimates] = useState([]);
   const [notifications, setNotifications] = useState([]);

@@ -369,8 +369,16 @@ ${latest.firstResult || "내용 없음"}
       };
 
       await updateDoc(doc(db, "estimates", target.firebaseId), saveData);
+      alert("수정 저장이 완료되었습니다.");
+
       resetForm();
-      return;
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+});
+
+return;
     }
 
     const companyCode = getCompanyCode(form.company);
@@ -404,7 +412,14 @@ ${latest.firstResult || "내용 없음"}
     };
 
     await addDoc(estimateCollection, newItem);
+    alert("저장이 완료되었습니다.");
+
     resetForm();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+   });
   };
 
   const handleEdit = (index) => {

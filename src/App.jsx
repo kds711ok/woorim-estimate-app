@@ -258,7 +258,8 @@ ${latest.firstResult || "내용 없음"}
     for (const file of files) {
       if (!(file instanceof File)) continue;
 
-      const safeFileName = `${Date.now()}_${file.name}`;
+      const safeFileName =
+        Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
       const filePath = `${manageNo}/${folderName}/${safeFileName}`;
 
       const { error } = await supabase.storage

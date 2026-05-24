@@ -671,6 +671,51 @@ return;
   window.URL.revokeObjectURL(blobUrl);
 };
 
+const removeExistingFile = async (type, index) => {
+  if (editIndex === null) return;
+
+  const target = estimates[editIndex];
+
+  let fileList = [...(target[type] || [])];
+
+  const removedFile = fileList[index];
+
+  if (!removedFile) return;
+
+  if (!confirm("첨부파일을 삭제하시겠습니까?")) return;
+
+  try {
+    if (removedFile.path) {
+      await supabase.storage
+        .from("estimate-files")
+        .remove([removedFile.path]);
+    }
+
+    fileList.splice(index, 1);
+
+    await updateDoc(doc(db, "estimates", target.firebaseId), {
+      [type]: fileList,
+      modifier: user.email,
+      modifyTime: new Date().toLocaleString(),
+    });
+
+    alert("첨부파일이 삭제되었습니다.");
+
+    const updated = [...estimates];
+
+    updated[editIndex] = {
+      ...updated[editIndex],
+      [type]: fileList,
+    };
+
+    setEstimates(updated);
+  } catch (error) {
+    alert("첨부파일 삭제 실패");
+    console.error(error);
+  }
+};
+
+
 const renderFiles = (files) => {
   if (!files || files.length === 0) {
     return <p className="emptyText">첨부파일 없음</p>;
@@ -953,6 +998,20 @@ const renderFiles = (files) => {
 
         <div className="uploadBox">
           <h3>도면첨부</h3>
+          {editIndex !== null &&
+  estimates[editIndex]?.drawings?.map((file, index) => (
+    <div key={index} className="fileItem">
+      <span>{file.name}</span>
+
+      <button
+        type="button"
+        className="deleteButton"
+        onClick={() => removeExistingFile("drawings", index)}
+      >
+        삭제
+      </button>
+    </div>
+))}
           <input
             type="file"
             multiple
@@ -965,6 +1024,20 @@ const renderFiles = (files) => {
 
         <div className="uploadBox">
           <h3>견적서첨부</h3>
+          {editIndex !== null &&
+  estimates[editIndex]?.quotes?.map((file, index) => (
+    <div key={index} className="fileItem">
+      <span>{file.name}</span>
+
+      <button
+        type="button"
+        className="deleteButton"
+        onClick={() => removeExistingFile("quotes", index)}
+      >
+        삭제
+      </button>
+    </div>
+))}
           <input
             type="file"
             multiple
@@ -977,6 +1050,20 @@ const renderFiles = (files) => {
 
         <div className="uploadBox">
           <h3>기타첨부</h3>
+          {editIndex !== null &&
+  estimates[editIndex]?.etcFiles?.map((file, index) => (
+    <div key={index} className="fileItem">
+      <span>{file.name}</span>
+
+      <button
+        type="button"
+        className="deleteButton"
+        onClick={() => removeExistingFile("etcFiles", index)}
+      >
+        삭제
+      </button>
+    </div>
+))}
           <input
             type="file"
             multiple

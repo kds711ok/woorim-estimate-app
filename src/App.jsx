@@ -456,16 +456,29 @@ return;
   };
 
   const handleDelete = async (index) => {
-    if (!isAdmin) {
-      alert("삭제는 관리자만 가능합니다.");
-      return;
-    }
+  if (!isAdmin) {
+    alert("삭제는 관리자만 가능합니다.");
+    return;
+  }
 
-    if (!confirm("정말 삭제하시겠습니까?")) return;
+  if (!confirm("정말 삭제하시겠습니까?")) return;
 
-    const target = filteredEstimates[index];
-    await deleteDoc(doc(db, "estimates", target.firebaseId));
-  };
+  const target = filteredEstimates[index];
+
+  await deleteDoc(doc(db, "estimates", target.firebaseId));
+
+  alert("삭제가 완료되었습니다.");
+
+  setSelectedEstimate(null);
+  setShowHistory(false);
+  resetForm();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
 
   const openCompanyHistory = (company) => {
     const history = estimates.filter((item) => item.company === company);
